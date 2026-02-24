@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Hello World Tasarım</title>
+    <title>Hello World Tasarim</title>
     <style>
         * {
             margin: 0;
