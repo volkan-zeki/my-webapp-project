@@ -5,12 +5,4 @@
          version="5.0">
   <display-name>Archetype Created Web Application</display-name>
 
-  <servlet>
-    <servlet-name>TodoServlet</servlet-name>
-    <servlet-class>com.example.todo.TodoServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>TodoServlet</servlet-name>
-    <url-pattern>/api/tasks</url-pattern>
-  </servlet-mapping>
 </web-app>

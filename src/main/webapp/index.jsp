@@ -21,8 +21,8 @@
 <ul id="tasks"></ul>
 
 <script>
-  // use absolute path so requests hit the servlet mapping regardless of context
-  const api = '/api/tasks';
+  // prepend context root for Catalina deployment
+  const api = '/my-webapp-project/api/tasks';
 
   async function loadTasks() {
     const res = await fetch(api);
