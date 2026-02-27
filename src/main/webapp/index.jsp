@@ -1,44 +1,69 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Hello World Tasarim</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .container {
-            text-align: center;
-            background: white;
-            padding: 40px 80px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        h1 {
-            font-size: 48px;
-            color: #333;
-            letter-spacing: 2px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>TODO List</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 2em; }
+  ul { list-style: none; padding: 0; }
+  li { margin: 0.5em 0; }
+  button.delete { margin-left: 1em; }
+</style>
 </head>
 <body>
+<h1>TODO List</h1>
+<div>
+  <input id="newTask" type="text" placeholder="Enter new task" />
+  <button id="addBtn">Add</button>
+</div>
+<ul id="tasks"></ul>
 
-    <div class="container">
-        <h1>Hello World</h1>
-    </div>
+<script>
+  const api = window.location.pathname.replace(/\/index\.jsp$/, '') + '/api/tasks';
 
+  async function loadTasks() {
+    const res = await fetch(api);
+    const tasks = await res.json();
+    const ul = document.getElementById('tasks');
+    ul.innerHTML = '';
+    tasks.forEach(t => {
+      const li = document.createElement('li');
+      li.textContent = t.description;
+      const btn = document.createElement('button');
+      btn.textContent = 'Delete';
+      btn.className = 'delete';
+      btn.onclick = () => deleteTask(t.id);
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+  }
+
+  async function addTask() {
+    const input = document.getElementById('newTask');
+    const desc = input.value.trim();
+    if (!desc) return;
+    await fetch(api, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ description: desc })
+    });
+    input.value = '';
+    loadTasks();
+  }
+
+  async function deleteTask(id) {
+    await fetch(api + '?id=' + id, { method: 'DELETE' });
+    loadTasks();
+  }
+
+  document.getElementById('addBtn').onclick = addTask;
+  document.getElementById('newTask').addEventListener('keypress', e => {
+    if (e.key === 'Enter') addTask();
+  });
+
+  loadTasks();
+</script>
 </body>
 </html>
