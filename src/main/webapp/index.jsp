@@ -21,7 +21,8 @@
 <ul id="tasks"></ul>
 
 <script>
-  const api = window.location.pathname.replace(/\/index\.jsp$/, '') + '/api/tasks';
+  // use absolute path so requests hit the servlet mapping regardless of context
+  const api = '/api/tasks';
 
   async function loadTasks() {
     const res = await fetch(api);
